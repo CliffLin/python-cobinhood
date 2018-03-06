@@ -1,0 +1,6 @@
+coloredlogs==7.0
+websocket-client==0.44.0
+requests==2.18.4
+pylint==1.7.3
+pylint-quotes==0.1.7
+pep8==1.7.0
