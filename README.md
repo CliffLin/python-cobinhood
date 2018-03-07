@@ -67,3 +67,71 @@ CobinhoodWS.exchange_data.ticker = {
     'COB-ETH': CobinhoodWS.Ticker(object)
 }
 </pre>
+## API Endpoint  
+### cobinhood.http.chart
+* /v1/chart/candles/:trading_pair_id  
+  `get_candles(trading_pair_id)`
+### cobinhood.http.market
+* /v1/market/trades/:trading_pair_id  
+  `get_trades(trading_pair_id)`
+* /v1/market/stats  
+  `get_stats()`
+* /v1/market/currency_intro  
+  `get_currency_intro()`
+* /v1/market/tickers/:trading_pair_id  
+  `get_tickers(trading_pair_id)`
+* /v1/market/exchange_rates/:currency_id  
+  `get_exchange_rates(currency_id)`
+* /v1/market/orderbooks/:trading_pair_id  
+  `get_orderbooks(trading_pair_id)`
+* /v1/market/orderbook/precisions/:trading_pair_id  
+  `get_orderbook_precisions(trading_pair_id)`
+* /v1/market/currencies  
+  `get_currencies()`
+* /v1/market/trading_pairs  
+  `get_trading_pairs()`
+### cobinhood.http.system
+* /v1/system/version  
+  `get_version()`
+* /v1/system/time  
+  `get_time()`
+* /v1/system/messages/:message_id  
+  `get_messages(message_id=None)`
+* /v1/system/info  
+  `get_info()`
+### cobinhood.http.trading
+* /v1/trading/trades/:trade_id  
+  `get_trades(trade_id=None)`
+* /v1/trading/orders  
+  `post_orders(data)`
+* /v1/trading/orders/:order_id  
+  `put_orders(order_id, data)`
+* /v1/trading/orders/:order_id  
+  `get_orders(order_id=None)`
+* /v1/trading/orders/:order_id  
+  `delete_orders(order_id)`
+* /v1/trading/order_history  
+  `get_order_history()`
+* /v1/trading/orders/:order_id/trades  
+  `get_orders_trades(order_id)`
+### cobinhood.http.wallet
+* /v1/wallet/deposits/:deposit_id  
+  `get_deposits(deposit_id=None)`
+* /v1/wallet/ledger  
+  `get_ledger()`
+* /v1/wallet/withdrawal_addresses  
+  `get_withdrawal_addresses()`
+* /v1/wallet/deposit_addresses  
+  `get_deposit_addresses()`
+* /v1/wallet/balances  
+  `get_balances()`
+* /v1/wallet/withdrawals/:withdrawal_id  
+  `get_withdrawals(withdrawal_id=None)`
+* /v1/wallet/limits/withdrawal  
+  `get_limits_withdrawal()`
+## Websocket Topic
+* `cobinhood.ws.subscribe.Trade(trading_pair_id)`
+* `cobinhood.ws.subscribe.Orderbook(trading_pair_id, precision=None)`
+* `cobinhood.ws.subscribe.Ticker(trading_pair_id)`
+* `cobinhood.ws.subscribe.Candle(trading_pair_id, precision=None)`
+* `cobinhood.ws.subscribe.Order()`
