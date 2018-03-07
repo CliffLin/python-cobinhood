@@ -2,6 +2,7 @@ import logging
 import traceback
 import time
 import json
+import threading
 import websocket
 import coloredlogs
 from cobinhood.configuration import Config
@@ -14,6 +15,8 @@ logger = logging.getLogger('cobinhood.ws')
 class CobinhoodWS(object):
     def __init__(self):
         coloredlogs.install(level=Config.LOG_LEVEL, logger=logger)
+        self.pingThread = threading.Thread(target=self.ping)
+        self.pingThread.setDaemon(True)
         self._subscribe = []
         self.ws = None
         self.msg_callback = None
@@ -38,8 +41,13 @@ class CobinhoodWS(object):
                                              on_close=self.on_close,
                                              on_message=on_message)
         while True:
-            self.ws.run_forever(ping_interval=40, ping_timeout=5)
+            self.ws.run_forever()
             time.sleep(3)
+
+    def ping(self):
+        while True:
+            self.post_message('{"action": "ping"}')
+            time.sleep(30)
 
     def on_error(self, unused_ws, error):
         logger.error('WS Error: %s', error)
@@ -48,6 +56,8 @@ class CobinhoodWS(object):
         logger.info('Websocket Connected!')
         for topic in self._subscribe:
             self.post_message(str(topic))
+        if not self.pingThread.ident:
+            self.pingThread.start()
 
     def on_close(self, unused_ws):
         logger.info('Websocket Closed!')
