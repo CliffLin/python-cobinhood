@@ -5,7 +5,6 @@ import json
 import threading
 import websocket
 import coloredlogs
-from cobinhood.configuration import Config
 from cobinhood.ws.response import ExchangeData
 
 logging.basicConfig()
@@ -13,13 +12,14 @@ logger = logging.getLogger('cobinhood.ws')
 
 
 class CobinhoodWS(object):
-    def __init__(self, token='', **parameters):
-        coloredlogs.install(level=Config.LOG_LEVEL, logger=logger)
+    def __init__(self, config, **parameters):
+        coloredlogs.install(level=config.LOG_LEVEL, logger=logger)
         self.pingThread = threading.Thread(target=self.ping)
         self.pingThread.setDaemon(True)
         self._subscribe = []
         self.ws = None
-        self.token = token
+        self.token = config.API_TOKEN
+        self.config = config
         self.msg_callback = None
         self.exchange_data = ExchangeData()
         self.parameters = parameters
@@ -29,19 +29,19 @@ class CobinhoodWS(object):
             self.msg_callback = on_message
         if subscribe:
             self._subscribe = subscribe
-        if Config.API_TOKEN:
+        if self.token != '':
             headers = 'Authorization: %s' % self.token
-            self.ws = websocket.WebSocketApp(Config.WS_URL,
+            self.ws = websocket.WebSocketApp(self.config.WS_URL,
                                              on_open=self.on_open,
                                              on_close=self.on_close,
                                              on_error=self.on_error,
                                              on_message=self.on_message,
                                              header=[headers])
         else:
-            self.ws = websocket.WebSocketApp(Config.WS_URL,
+            self.ws = websocket.WebSocketApp(self.config.WS_URL,
                                              on_open=self.on_open,
                                              on_close=self.on_close,
-                                             on_message=on_message)
+                                             on_message=self.on_message)
         while True:
             try:
                 self.ws.run_forever()
@@ -86,7 +86,7 @@ class CobinhoodWS(object):
             if 'actoion' not in msg.keys() and 'event' not in msg.keys():
                 self.exchange_data.dispatcher(msg)
             if self.msg_callback:
-                self.msg_callback(self.parameter['obj'], msg)
+                self.msg_callback(self.parameters['obj'], msg)
         except Exception as e:
             logger.error('%s, %s', msg, e)
             logger.error(traceback.print_exc())

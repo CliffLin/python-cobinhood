@@ -1,18 +1,18 @@
 """ chart """
 import requests
-from cobinhood.configuration import Config
 from cobinhood.common import logger
-
-BASE_URL = '%s/chart' % Config.BASE_URL
 
 
 class Chart(object):
+    def __init__(self, config):
+        self.config = config
+        self.BASE_URL = '%s/chart' % config.BASE_URL
 
     @logger(obj=__name__)
     def get_candles(self, trading_pair_id, **parameter):
         """ /v1/chart/candles/:trading_pair_id """
         para = '&'.join('{}={}'.format(k, v) for k, v in parameter.items())
-        req = requests.get('%s/candles/%s?%s' % (BASE_URL,
+        req = requests.get('%s/candles/%s?%s' % (self.BASE_URL,
                                                  trading_pair_id,
                                                  para))
         return req.json()

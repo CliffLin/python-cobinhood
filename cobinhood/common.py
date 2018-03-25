@@ -3,21 +3,8 @@ Common Library
 """
 import logging
 import coloredlogs
-from cobinhood.configuration import Config
 
-LOG = logging.getLogger('cobinhood')
-
-
-def Authorization(func):
-    """
-    Check API TOKEN is Existed
-    """
-    def _wrapped(*args):
-        if not Config.API_TOKEN:
-            LOG.error('NO API TOKEN')
-            return None
-        return func(*args)
-    return _wrapped
+LOG = logging.getLogger('cobinhood-api')
 
 
 def logger(level='DEBUG', obj='cobinhood'):
@@ -26,7 +13,7 @@ def logger(level='DEBUG', obj='cobinhood'):
     """
     def decorator(func):
         def _wrapped(*args):
-            coloredlogs.install(level=Config.LOG_LEVEL, logger=LOG)
+            coloredlogs.install(level=args[0].config.LOG_LEVEL, logger=LOG)
 
             if level == 'DEBUG':
                 LOG.debug('%s fetch "%s"', obj, func.__name__)
