@@ -4,30 +4,31 @@
 ### Usage
 <b>Basic Usage</b>
 <pre>
-from cobinhood.http import system
-print system.get_time()
+from cobinhood import Cobinhood
+cob = Cobinhood()
+print cob.system.get_time()
 </pre>
 
 **Private Token Usage**
 <pre>
-from cobinhood.configuration import Config
-from cobinhood.http import wallet
-Config.API_TOKEN = 'YOUR_API_TOKEN'
-print wallet.get_balances()
+from cobinhood import Cobinhood
+cob = Cobinhood(API_TOKEN='YOUR_API_TOKEN')
+print cob.wallet.get_balances()
 </pre>
 
 **Websocket Usgae**
 <pre>
-from cobinhood.ws import feed
+from cobinhood import Cobinhood
 from cobinhood.ws.subscribe import Orderbook
 
-def on_message(ws_obj, msg):
-    print ws_obj.exchange_data.orderbook
+def on_message(cob_obj, msg):
+    print cob_obj.system.get_time()
+    print cob_obj.ws.exchange_data.orderbook
     print msg
 
-ws = feed.CobinhoodWS()
+cob = Cobinhood()
 cobeth_orderbook = Orderbook('COB-ETH')
-ws.start(subscribe=[cobeth_orderbook], on_message=on_message)
+cob.ws.start(subscribe=[cobeth_orderbook], on_message=on_message)
 
 </pre>
 
@@ -51,7 +52,7 @@ data = {
     "price": "5000.01000000",
     "size": "1.0100"
 }
-cobinhood.http.trade.post_order(data)
+cobinhood.trade.post_order(data)
 </pre>
 ### Websocket response
 You need to design a callback function with two parameters: CobinhoodWS object, response message(json).  
@@ -68,10 +69,10 @@ CobinhoodWS.exchange_data.ticker = {
 }
 </pre>
 ## API Endpoint  
-### cobinhood.http.chart
+### cobinhood.candle
 * /v1/chart/candles/:trading_pair_id  
   `get_candles(trading_pair_id)`
-### cobinhood.http.market
+### cobinhood.market
 * /v1/market/trades/:trading_pair_id  
   `get_trades(trading_pair_id)`
 * /v1/market/stats  
@@ -90,7 +91,7 @@ CobinhoodWS.exchange_data.ticker = {
   `get_currencies()`
 * /v1/market/trading_pairs  
   `get_trading_pairs()`
-### cobinhood.http.system
+### cobinhood.system
 * /v1/system/version  
   `get_version()`
 * /v1/system/time  
@@ -99,7 +100,7 @@ CobinhoodWS.exchange_data.ticker = {
   `get_messages(message_id=None)`
 * /v1/system/info  
   `get_info()`
-### cobinhood.http.trading
+### cobinhood.trading
 * /v1/trading/trades/:trade_id  
   `get_trades(trade_id=None)`
 * /v1/trading/orders  
@@ -114,7 +115,7 @@ CobinhoodWS.exchange_data.ticker = {
   `get_order_history()`
 * /v1/trading/orders/:order_id/trades  
   `get_orders_trades(order_id)`
-### cobinhood.http.wallet
+### cobinhood.wallet
 * /v1/wallet/deposits/:deposit_id  
   `get_deposits(deposit_id=None)`
 * /v1/wallet/ledger  
