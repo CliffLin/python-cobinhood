@@ -3,16 +3,19 @@ Cobinhood Order Notificaion on Telegram.
 """
 import json
 import telegram
-from cobinhood.ws.feed import CobinhoodWS
+from cobinhood import Cobinhood
 from cobinhood.ws.subscribe import Order
-from cobinhood.configuration import Config
 
-Config.API_TOKEN = 'YOUR_COBINHOOD_API_TOKEN'
 TELGRAM_TOKEN = 'YOUR_TELEGRAM_TOKEN'
 USER_ID = 'YOUR_TELEGRAM_USER_ID'
 BOT = telegram.Bot(token=TELGRAM_TOKEN)
 
-def on_message(msg):
+def on_message(cob_obj, msg):
+    """
+    parameters:
+      - cob_obj: Object(Cobinhood)
+      - msg: Dict()
+    """
     if 'channel_id' in msg.keys() and 'order' == msg['channel_id']:
         if 'update' in msg.keys():
             msg = msg['update']
@@ -21,9 +24,9 @@ def on_message(msg):
             BOT.send_message(USER_ID, text=text)
 
 def main():
-    c = CobinhoodWS()
-    ticker = Order()
-    c.start(subscribe=[ticker], on_message=on_message)
+    cobin_bot = Cobinhood(API_TOKEN='YOUR_API_TOKEN', LOG_LEVEL='DEBUG')
+    order = Order()
+    cobin_bot.ws.start(subscribe=[order], on_message=on_message)
 
 if __name__ == '__main__':
     main()

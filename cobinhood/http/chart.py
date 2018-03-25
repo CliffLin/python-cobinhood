@@ -6,8 +6,13 @@ from cobinhood.common import logger
 BASE_URL = '%s/chart' % Config.BASE_URL
 
 
-@logger(obj=__name__)
-def get_candles(trading_pair_id):
-    """ /v1/chart/candles/:trading_pair_id """
-    req = requests.get('%s/candles/%s' % (BASE_URL, trading_pair_id))
-    return req.json()
+class Chart(object):
+
+    @logger(obj=__name__)
+    def get_candles(self, trading_pair_id, **parameter):
+        """ /v1/chart/candles/:trading_pair_id """
+        para = '&'.join('{}={}'.format(k, v) for k, v in parameter.items())
+        req = requests.get('%s/candles/%s?%s' % (BASE_URL,
+                                                 trading_pair_id,
+                                                 para))
+        return req.json()
