@@ -6,7 +6,7 @@ from cobinhood.common import logger
 class System(object):
     def __init__(self, config):
         self.config = config
-        self.BASE_URL = '%s/market' % config.BASE_URL
+        self.BASE_URL = '%s/system' % config.BASE_URL
 
     @logger(obj=__name__)
     def get_version(self):
