@@ -1,6 +1,6 @@
 """ chart """
 import requests
-from cobinhood.common import logger
+from cobinhood_api.common import logger
 
 
 class Chart(object):
@@ -15,4 +15,6 @@ class Chart(object):
         req = requests.get('%s/candles/%s?%s' % (self.BASE_URL,
                                                  trading_pair_id,
                                                  para))
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()

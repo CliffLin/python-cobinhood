@@ -1,8 +1,8 @@
 """ wallet """
 import time
 import requests
-from cobinhood.configuration import Config
-from cobinhood.common import logger
+from cobinhood_api.configuration import Config
+from cobinhood_api.common import logger
 
 
 class Wallet(object):
@@ -23,8 +23,10 @@ class Wallet(object):
             req = requests.get('%s/deposits/%s' % (self.BASE_URL, deposit_id),
                                headers=self.headers)
         else:
-            req = requests.get('%s/deposits/' % (self.BASE_URL),
+            req = requests.get('%s/deposits' % (self.BASE_URL),
                                headers=self.headers)
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
@@ -34,6 +36,8 @@ class Wallet(object):
         para = '&'.join('{}={}'.format(k, v) for k, v in parameter.items())
         req = requests.get('%s/ledger?%s' % (self.BASE_URL, para),
                            headers=self.headers)
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
@@ -43,14 +47,18 @@ class Wallet(object):
         para = '&'.join('{}={}'.format(k, v) for k, v in parameter.items())
         req = requests.get('%s/deposit_addresses?%s' % (self.BASE_URL, para),
                            headers=self.headers)
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
     def get_balances(self):
         """ /v1/wallet/balances """
         self.headers['nonce'] = str(int(float(time.time()) * 1000))
-        req = requests.get('%s/balances/' % (self.BASE_URL),
+        req = requests.get('%s/balances' % (self.BASE_URL),
                            headers=self.headers)
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
@@ -62,14 +70,18 @@ class Wallet(object):
                                                       withdrawal_id),
                                headers=self.headers)
         else:
-            req = requests.get('%s/withdrawals/' % (self.BASE_URL),
+            req = requests.get('%s/withdrawals' % (self.BASE_URL),
                                headers=self.headers)
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
     def get_limits_withdrawal(self):
         """ /v1/wallet/limits/withdrawal """
         self.headers['nonce'] = str(int(float(time.time()) * 1000))
-        req = requests.get('%s/limits/withdrawal/' % (self.BASE_URL),
+        req = requests.get('%s/limits/withdrawal' % (self.BASE_URL),
                            headers=self.headers)
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()

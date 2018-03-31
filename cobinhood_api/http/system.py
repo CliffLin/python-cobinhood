@@ -1,6 +1,6 @@
 """ system """
 import requests
-from cobinhood.common import logger
+from cobinhood_api.common import logger
 
 
 class System(object):
@@ -11,13 +11,17 @@ class System(object):
     @logger(obj=__name__)
     def get_version(self):
         """ /v1/system/version """
-        req = requests.get('%s/version/' % (self.BASE_URL))
+        req = requests.get('%s/version' % (self.BASE_URL))
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
     def get_time(self):
         """ /v1/system/time """
-        req = requests.get('%s/time/' % (self.BASE_URL))
+        req = requests.get('%s/time' % (self.BASE_URL))
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
@@ -26,11 +30,15 @@ class System(object):
         if message_id:
             req = requests.get('%s/messages/%s' % (self.BASE_URL, message_id))
         else:
-            req = requests.get('%s/messages/' % (self.BASE_URL))
+            req = requests.get('%s/messages' % (self.BASE_URL))
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()
 
     @logger(obj=__name__)
     def get_info(self):
         """ /v1/system/info """
-        req = requests.get('%s/info/' % (self.BASE_URL))
+        req = requests.get('%s/info' % (self.BASE_URL))
+        if self.config.DEV:
+            return req.json(), req.elapsed.total_seconds()
         return req.json()

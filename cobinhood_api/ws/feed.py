@@ -5,7 +5,7 @@ import json
 import threading
 import websocket
 import coloredlogs
-from cobinhood.ws.response import ExchangeData
+from cobinhood_api.ws.response import ExchangeData
 
 logging.basicConfig()
 logger = logging.getLogger('cobinhood.ws')
@@ -47,15 +47,15 @@ class CobinhoodWS(object):
                 self.ws.run_forever()
             except Exception as e:
                 logger.error('WS Ping Error: %s', e)
-            time.sleep(3)
+            time.sleep(10)
 
     def ping(self):
         while True:
             try:
                 self.ws.send('{"action": "ping"}')
-                time.sleep(30)
             except Exception as e:
                 logger.error('WS Ping Error: %s', e)
+            time.sleep(30)
 
     def on_error(self, unused_ws, error):
         logger.error('WS Error: %s', error)

@@ -3,4 +3,5 @@ class Config(object):
     API_TOKEN = ''
     BASE_URL = 'https://api.cobinhood.com/%s' % API_VERSION
     LOG_LEVEL = 'DEBUG'
-    WS_URL = 'wss://feed.cobinhood.com/ws'
+    WS_URL = 'wss://ws.cobinhood.com/ws'
+    DEV = False

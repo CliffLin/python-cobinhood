@@ -4,22 +4,22 @@
 ### Usage
 <b>Basic Usage</b>
 <pre>
-from cobinhood import Cobinhood
+from cobinhood_api import Cobinhood
 cob = Cobinhood()
 print cob.system.get_time()
 </pre>
 
 **Private Token Usage**
 <pre>
-from cobinhood import Cobinhood
+from cobinhood_api import Cobinhood
 cob = Cobinhood(API_TOKEN='YOUR_API_TOKEN')
 print cob.wallet.get_balances()
 </pre>
 
 **Websocket Usgae**
 <pre>
-from cobinhood import Cobinhood
-from cobinhood.ws.subscribe import Orderbook
+from cobinhood_api import Cobinhood
+from cobinhood_api.ws.subscribe import Orderbook
 
 def on_message(cob_obj, msg):
     print cob_obj.system.get_time()
@@ -131,8 +131,8 @@ CobinhoodWS.exchange_data.ticker = {
 * /v1/wallet/limits/withdrawal  
   `get_limits_withdrawal()`
 ## Websocket Topic
-* `cobinhood.ws.subscribe.Trade(trading_pair_id)`
-* `cobinhood.ws.subscribe.Orderbook(trading_pair_id, precision=None)`
-* `cobinhood.ws.subscribe.Ticker(trading_pair_id)`
-* `cobinhood.ws.subscribe.Candle(trading_pair_id, precision=None)`
-* `cobinhood.ws.subscribe.Order()`
+* `cobinhood_api.ws.subscribe.Trade(trading_pair_id)`
+* `cobinhood_api.ws.subscribe.Orderbook(trading_pair_id, precision=None)`
+* `cobinhood_api.ws.subscribe.Ticker(trading_pair_id)`
+* `cobinhood_api.ws.subscribe.Candle(trading_pair_id, precision=None)`
+* `cobinhood_api.ws.subscribe.Order()`
