@@ -48,14 +48,15 @@ class Trading(object):
         return req.json()
 
     @logger(obj=__name__)
-    def get_orders(self, order_id=None):
+    def get_orders(self, order_id=None, **parameter):
         """ /v1/trading/orders/:order_id """
         self.header['nonce'] = str(int(float(time.time()) * 1000))
         if order_id:
             req = requests.get('%s/orders/%s' % (self.BASE_URL, order_id),
                                headers=self.header)
         else:
-            req = requests.get('%s/orders' % (self.BASE_URL),
+            para = '&'.join('{}={}'.format(k, v) for k, v in parameter.items())
+            req = requests.get('%s/orders?%s' % (self.BASE_URL, para),
                                headers=self.header)
         if self.config.DEV:
             return req.json(), req.elapsed.total_seconds()
