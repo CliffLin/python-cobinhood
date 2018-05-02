@@ -64,7 +64,8 @@ class CobinhoodWS(object):
         logger.info('Websocket Connected!')
         for topic in self._subscribe:
             self.post_message(str(topic))
-        self.pingThread.start()
+        if not self.pingThread.is_alive():
+            self.pingThread.start()
 
     def on_close(self, unused_ws):
         logger.info('Websocket Closed!')
