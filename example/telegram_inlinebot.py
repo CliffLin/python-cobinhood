@@ -57,9 +57,11 @@ def inlinequery(bot, update):
                     id=uuid4(),
                     title=td_pair,
                     input_message_content=InputTextMessageContent(
-                    '%s: %s' % (
-                        td_pair,
-                        cex.ws.exchange_data.trade[td_pair].data[-1][2]))))
+                        '*Current price of the trading pair*\n%s: %s %s' % (
+                            td_pair,
+                            cex.ws.exchange_data.trade[td_pair].data[0][2],
+                            td_pair.split('-')[1]),
+                        parse_mode=ParseMode.MARKDOWN)))
 
     update.inline_query.answer(results)
 

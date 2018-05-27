@@ -152,8 +152,8 @@ class Trade(object):
             self.data = msg['snapshot']
         elif 'update' in msg:
             msg = msg['update']
-            self.data.pop()
-            self.data.append(msg)
+            for m in msg:
+                self.data.insert(0, m)
 
 
 class Order(object):
