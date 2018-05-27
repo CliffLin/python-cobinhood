@@ -7,7 +7,6 @@ import websocket
 import coloredlogs
 from cobinhood_api.ws.response import ExchangeData
 
-logging.basicConfig()
 logger = logging.getLogger('cobinhood.ws')
 
 
