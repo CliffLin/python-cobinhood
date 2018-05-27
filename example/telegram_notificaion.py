@@ -3,8 +3,8 @@ Cobinhood Order Notificaion on Telegram.
 """
 import json
 import telegram
-from cobinhood import Cobinhood
-from cobinhood.ws.subscribe import Order
+from cobinhood_api import Cobinhood
+from cobinhood_api.ws.subscribe import Order
 
 TELGRAM_TOKEN = 'YOUR_TELEGRAM_TOKEN'
 USER_ID = 'YOUR_TELEGRAM_USER_ID'
