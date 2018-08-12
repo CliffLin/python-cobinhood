@@ -14,3 +14,9 @@ class Cobinhood(object):
         self.trading = trading.Trading(self.config)
         self.chart = chart.Chart(self.config)
         self.ws = feed.CobinhoodWS(self.config, obj=self)
+
+    def load_key(self, path):
+        """Load API token from file at path"""
+        with open(path, 'r') as f:
+            self.config.API_TOKEN = f.readline().strip()
+        return
